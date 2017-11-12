@@ -10,6 +10,7 @@
 
 #include "Globals.h"
 #include "SystemStructs.h"
+#include "Ports.h"
 
 #ifdef DEBUG
 #include "Debug.h"

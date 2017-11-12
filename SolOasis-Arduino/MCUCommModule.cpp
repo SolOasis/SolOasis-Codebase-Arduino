@@ -15,8 +15,7 @@ MCUCommModule::~MCUCommModule() {
 }
 
 Status MCUCommModule::SendCurrVoltData(CurrVoltData* cvData) {
-
-
+	CVSerial.write((const char*)cvData, sizeof(CurrVoltData));
 	return OK;
 }
 
