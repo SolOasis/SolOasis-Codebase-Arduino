@@ -3,52 +3,61 @@
 #include "SystemStructs.h"
 #include "Schedule.h"
 
-#define START_ID_VAL_1 0xA5u
-#define START_ID_VAL_2 0xB7u
-
-Schedule schedule;
-CurrVoltData cvData;
-float data[9];
-
-
+extern LiquidCrystal lcd(8, 7, 6, 5, 4, 3, 2); //LCD setup pindefinition
+extern double energy = 0; //definition
 void setup() {
-	//schedule.SetupSchedule();
-	Serial.begin(9600);
-//	cvData.startId1 = START_ID_VAL_1;
-//	cvData.startId2 = START_ID_VAL_2;
-	cvData.panelCurrent = 1.1;
-	cvData.panelVoltage = 1.2;
-	cvData.panelPower = 1.3;
-	cvData.battCurrent = 2.4;
-	cvData.battVoltage = 2.5;
-	cvData.battPower = 2.6;
-	cvData.convCurrent = 3.7;
-	cvData.convVoltage = 3.8;
-	cvData.convPower = 3.9;
-
-	data[0] = 1.1;
-	data[1] = 2.2;
-	data[2] = 3.3;
-	data[3] = 4.4;
-	data[4] = 5.5;
-	data[5] = 6.6;
-	data[6] = 7.7;
-	data[7] = 8.8;
-	data[8] = 9.9;
-
-//	int i = 0;
-//	for(i = 0; i < sizeof(CurrVoltData); i++){
-//		data[i]=((byte*)&cvData)[sizeof(CurrVoltData)-1-i];
-//	}
+	SystemSetup();
 }
 
 void loop() {
+	double currentSensorValue = 0;
+	double voltageSensorValue = 0;
+	double actualCurrent = 0;
+	double actualVoltage = 0;
+	// Calculate AVG_CYCLE ms average current and voltage,
+	// and approximate energy = sum of {(I * V) * POWER_METER_MEASURE_PERIOD ms}
+	for (int i=0; i<AVG_CYCLE; i++){
+		double currentInThisLoop = (analogRead(A4) - CURRENT_BIAS) * CURRENT_RATIO;
+		double voltageInThisLoop = analogRead(A5) * VOLTAGE_RATIO / 1024 * 5;
+		if (abs(currentInThisLoop) < CURRENT_DETECT_TH) {
+			currentInThisLoop = 0;
+		}
+		if (abs(voltageInThisLoop) < VOLTAGE_DETECT_TH) {
+			voltageInThisLoop = 0;
+		}
+		currentSensorValue += currentInThisLoop;
+		voltageSensorValue += voltageInThisLoop;
+		energy += currentInThisLoop * voltageInThisLoop * POWER_METER_MEASURE_PERIOD / 1000;
+		delay(POWER_METER_MEASURE_PERIOD);
+	}
+	long int tmp_time = millis();
+	actualCurrent = currentSensorValue / AVG_CYCLE;
+	actualVoltage = voltageSensorValue / AVG_CYCLE;
 
+	Serial.print("V: ");
+	Serial.print(actualVoltage);
+	Serial.print(" / I: ");
+	Serial.print(actualCurrent);
+	Serial.print(" / P:");
+	Serial.print(actualVoltage * actualCurrent);
+	Serial.print(" / E:");
+	Serial.println(energy);
 
-//		CVSerial.write(out);
-	//schedule.RunSchedule();
-	Serial.write((byte*)&cvData, sizeof(CurrVoltData));
-//	Serial.write((byte*)data, sizeof(float)*9);
-	//Serial.write(data, sizeof(CurrVoltData));
-	delay(1000);
+	//////////////////////////////////////////print power and energy to a LCD////////////////////////////////////////////////
+	lcd.setCursor(16,1); // set the cursor outside the display count
+	lcd.print(" "); // print empty character
+	lcd.setCursor(1,0); // set the cursor at 1st col and 1st row
+	lcd.print(actualVoltage * actualCurrent);
+	lcd.print("W ");
+	lcd.print(actualVoltage);
+	lcd.print("V  ");
+	lcd.setCursor(1,1); // set the cursor at 1st col and 2nd row
+	lcd.print(energy);
+	lcd.print("Ws ");
+	lcd.print(actualCurrent);
+	lcd.print("A  ");
+	//Compensate time taken my these calculations (about 1~10 millisecond)
+	Serial.println(millis() - tmp_time);
+	energy += actualVoltage * actualCurrent * (millis() - tmp_time) / 1000;
+
 }
