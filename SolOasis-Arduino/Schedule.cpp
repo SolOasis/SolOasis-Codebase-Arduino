@@ -110,8 +110,9 @@ void Schedule::RunSchedule() {
 #endif
 
 	// scheduling loop
+	int counter = 0;
 	while(true){
-
+		Serial.print("Loop "); Serial.println(counter);
 	}
 }
 
@@ -130,7 +131,9 @@ ISR(TIMER0_COMPA_vect){//timer0 interrupt 2kHz (Unused)
 #ifdef EN_TIMER1
 ISR(TIMER1_COMPA_vect){//timer1 interrupt 1Hz sends data to MCU
 	//generates pulse wave of frequency 1Hz/2 = 0.5kHz (takes two cycles for full wave- toggle high then toggle low)
+	Serial.println("Interrupt called");
 	if (timer1En){
+		Serial.println("In Interrupt if");
 		comm.SendCurrVoltData(&cvData);
 	}
 	else{
