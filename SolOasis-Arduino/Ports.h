@@ -9,6 +9,7 @@
 
 #define CVSerial Serial
 #define CV_BAUD 9600
+#define BACK_LIGHT 9 //Brightness of LCD
 
 // Define SetupPorts() as extern to avoid compiling
 // problems

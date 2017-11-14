@@ -15,6 +15,6 @@ DataProcessorModule::~DataProcessorModule() {
 
 double DataProcessorModule::GetPower(double curr, double volt) {
 
-	return 0;
+	return curr * volt;
 }
 
