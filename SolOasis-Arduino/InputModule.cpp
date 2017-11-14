@@ -2,7 +2,7 @@
  * InputModule.cpp
  *
  *  Created on: Nov 12, 2017
- *      Author: Chris
+ *      Author: Allen, Chris
  */
 
 #include "InputModule.h"

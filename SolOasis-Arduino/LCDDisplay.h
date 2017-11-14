@@ -2,7 +2,7 @@
  * LCDDisplay.h
  *
  *  Created on: Nov 14, 2017
- *      Author: allen
+ *      Author: Allen
  */
 
 #ifndef LCDDISPLAY_H_

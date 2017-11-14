@@ -2,7 +2,7 @@
  * LCDDisplay.cpp
  *
  *  Created on: Nov 14, 2017
- *      Author: allen
+ *      Author: Allen
  */
 
 #include "LCDDisplay.h"

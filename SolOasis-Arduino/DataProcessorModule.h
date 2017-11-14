@@ -2,7 +2,7 @@
  * DataProcessorModule.h
  *
  *  Created on: Nov 12, 2017
- *      Author: Chris
+ *      Author: Allen, Chris
  */
 
 #ifndef _DATA_PROCESSOR_MODULE_H_
@@ -10,6 +10,7 @@
 
 #include "Globals.h"
 #include "SystemStructs.h"
+#include "InputModule.h"
 
 #ifdef DEBUG
 #include "Debug.h"
@@ -17,6 +18,11 @@
 
 class DataProcessorModule {
 private:
+	InputModule* inputModulePtr;
+	long long lastUpdateTime;
+	double energy;
+	double avgCurr;
+	double avgVolt;
 #ifdef DEBUG
 	Debug debug;
 #endif
@@ -24,7 +30,12 @@ private:
 public:
 	DataProcessorModule();
 	~DataProcessorModule();
-	double GetPower(double curr, double volt);
+	double GetAvgPower();
+	double GetCurrentPower();
+	double GetEnergy();
+	double GetAvgVoltage();
+	double GetAvgCurrent();
+	void Update();
 };
 
 

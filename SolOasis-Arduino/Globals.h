@@ -46,9 +46,9 @@
 
 #define POWER_METER_MEASURE_PERIOD 2 //delay to measure in millisecond
 #define AVG_CYCLE 50 //average cycle for measuring in millisecond
-#define CURRENT_BIAS 513 //measured current biase
+#define CURRENT_BIAS 514 //measured current biase
 #define CURRENT_RATIO 0.0373 //analog input to real value ratio
-#define VOLTAGE_RATIO 4.056 //analog input to real value ratio
+#define VOLTAGE_RATIO 4.15 //analog input to real value ratio
 #define CURRENT_DETECT_TH 0.05 //Minimum acceptable current in Amp
 #define VOLTAGE_DETECT_TH 0.025 //Minimum acceptable voltage inVolt
 
