@@ -12,7 +12,7 @@
 #include <HardwareSerial.h>
 #include <LiquidCrystal.h>
 
-#define DEBUG
+//#define DEBUG
 #define DEBUG_BAUD 115200
 #if defined(ARDUINO_SAMD_ZERO) && defined(SERIAL_PORT_USBVIRTUAL)
   // Required for Serial on Zero based boards
