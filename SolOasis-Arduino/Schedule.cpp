@@ -22,7 +22,8 @@ static bool timer0En = false;
 static bool timer1En = false;
 static bool timer2En = false;
 static CurrVoltData cvData;
-MCUCommModule comm;
+static DataProcessorModule datProc;
+static MCUCommModule comm;
 
 void Schedule::TimerSetup() {
 	cli();//stop interrupts
@@ -89,6 +90,7 @@ void Schedule::SetupSchedule() {
 
 	memset(&cvData,0,sizeof(CurrVoltData));
 
+	SystemSetup();
 	SetupPorts();
 	TimerSetup();
 }
@@ -96,23 +98,16 @@ void Schedule::SetupSchedule() {
 void Schedule::RunSchedule() {
 	timer1En = true;
 
-#ifdef DEBUG
-	cvData.panelCurrent = 1.1;
-	cvData.panelVoltage = 1.2;
-	cvData.panelPower = 1.3;
-	cvData.battCurrent = 2.4;
-	cvData.battVoltage = 2.5;
-	cvData.battPower = 2.6;
-	cvData.convCurrent = 3.7;
-	cvData.convVoltage = 3.8;
-	cvData.convPower = 3.9;
-
-#endif
-
 	// scheduling loop
 	int counter = 0;
 	while(true){
-		Serial.print("Loop "); Serial.println(counter);
+		//Serial.print("Loop "); Serial.println(counter);
+		datProc.Update();
+		display.Display(datProc.GetAvgCurrent(),
+				datProc.GetAvgVoltage(),
+				datProc.GetCurrentPower(),
+				datProc.GetEnergy());
+
 	}
 }
 
@@ -129,11 +124,22 @@ ISR(TIMER0_COMPA_vect){//timer0 interrupt 2kHz (Unused)
 #endif
 
 #ifdef EN_TIMER1
-ISR(TIMER1_COMPA_vect){//timer1 interrupt 1Hz sends data to MCU
-	//generates pulse wave of frequency 1Hz/2 = 0.5kHz (takes two cycles for full wave- toggle high then toggle low)
-	Serial.println("Interrupt called");
+//ISR(TIMER1_COMPA_vect){//timer1 interrupt 1Hz sends data to MCU
+//	//generates pulse wave of frequency 1Hz/2 = 0.5kHz
+//	if (timer1En){
+//		comm.SendCurrVoltData(&cvData);
+//	}
+//	else{
+//
+//	}
+//}
+
+SIGNAL(TIMER1_COMPA_vect){
 	if (timer1En){
-		Serial.println("In Interrupt if");
+		cvData.avgCurrent = datProc.GetAvgCurrent();
+		cvData.avgVoltage = datProc.GetAvgVoltage();
+		cvData.currPower = datProc.GetCurrentPower();
+		cvData.energy = datProc.GetEnergy();
 		comm.SendCurrVoltData(&cvData);
 	}
 	else{

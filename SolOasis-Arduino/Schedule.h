@@ -14,13 +14,14 @@
 #include "MCUCommModule.h"
 #include "InputModule.h"
 #include "DataProcessorModule.h"
+#include "LCDDisplay.h"
 
 #define EN_TIMER1
 
 class Schedule{
 private:
 	InputModule in;
-	DataProcessorModule datProc;
+	LCDDisplay display;
 	void TimerSetup();
 public:
 	Schedule();
