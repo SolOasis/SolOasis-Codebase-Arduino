@@ -4,15 +4,18 @@
 #include<inttypes.h>
 
 typedef struct SCurrVoltData {
-//	float panelVoltage;
-//	float panelCurrent;
-//	float panelPower;
-//	float battVoltage;
-//	float battCurrent;
-//	float battPower;
-//	float convVoltage;
-//	float convCurrent;
-//	float convPower;
+//	float panelAvgVoltage;
+//	float panelAvgCurrent;
+//	float panelCurrPower;
+//	float panelEnergy;
+//	float battAvgVoltage;
+//	float battAvgCurrent;
+//	float battCurrPower;
+//	float battEnergy;
+//	float convAvgVoltage;
+//	float convAvgCurrent;
+//	float convCurrPower;
+//	float convEnergy;
 	float avgCurrent;
 	float avgVoltage;
 	float currPower;
