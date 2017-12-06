@@ -14,7 +14,7 @@ InputModule::~InputModule() {
 }
 
 double InputModule::GetPanelVoltage() {
-	double voltageAnalogRead =  analogRead(A5) * VOLTAGE_RATIO / 1024 * 5;
+	double voltageAnalogRead =  analogRead(A0) * VOLTAGE_RATIO / 1024 * 5;
 	if (abs(voltageAnalogRead) < VOLTAGE_DETECT_TH) {
 		voltageAnalogRead = 0;
 	}
@@ -23,7 +23,7 @@ double InputModule::GetPanelVoltage() {
 }
 
 double InputModule::GetPanelCurrent() {
-	double currentAnalogRead =  (analogRead(A4) - CURRENT_BIAS) * CURRENT_RATIO;
+	double currentAnalogRead =  (analogRead(A3) - CURRENT_BIAS) * CURRENT_RATIO;
 	if (abs(currentAnalogRead) < CURRENT_DETECT_TH)
 		currentAnalogRead = 0;
 	return currentAnalogRead;

@@ -45,4 +45,23 @@ void LCDDisplay::Display(double curr, double volt, double power, double energy) 
 		lcd.print(" ");
 	lcd.print(energy);
 	lcd.print("Ws ");
+ #ifdef DEBUG
+  if (volt > 0)
+    debug.print(" ");
+  debug.print(volt);
+  debug.print("V  ");
+  if (power > 0)
+    debug.print(" ");
+  debug.print(power);
+  debug.println("W ");
+  if (curr > 0)
+    debug.print(" ");
+  debug.print(curr);
+  debug.print("A  ");
+
+  if (energy > 0)
+    debug.print(" ");
+  debug.print(energy);
+  debug.println("Ws ");
+ #endif
 }
