@@ -101,7 +101,6 @@ void Schedule::RunSchedule() {
 	// scheduling loop
 	int counter = 0;
 	while(true){
-		//Serial.print("Loop "); Serial.println(counter);
 		datProc.Update();
 		display.Display(datProc.GetAvgCurrent(),
 				datProc.GetAvgVoltage(),
